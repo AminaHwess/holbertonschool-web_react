@@ -6,7 +6,7 @@
 
 ---
 
-## Learning Objectives
+## Learning Objective
 
 * When to use a Class or a function to create a component
 * The lifecycle of a Class component
