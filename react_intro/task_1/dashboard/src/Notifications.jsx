@@ -1,5 +1,7 @@
-import React from "react";
-import "./Notifications.css";
+// task_1/dashboard/src/Notifications.jsx
+
+import React from 'react';
+import './Notifications.css';
 
 function Notifications() {
   return (

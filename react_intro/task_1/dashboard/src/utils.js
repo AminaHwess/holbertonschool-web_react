@@ -1,9 +1,10 @@
-// Return the current year
-export function getCurrentYear() {
-  return new Date().getFullYear();
-}
+// task_1/dashboard/src/utils.js
 
-// Return different text based on whether we're on index page or not
-export function getFooterCopy(isIndex) {
-  return isIndex ? "Holberton School" : "Holberton School main dashboard";
-}
+export function getCurrentYear() {
+    return new Date().getFullYear();
+  }
+  
+  export function getFooterCopy(isIndex) {
+    return isIndex ? 'Holberton School' : 'Holberton School main dashboard';
+  }
+  

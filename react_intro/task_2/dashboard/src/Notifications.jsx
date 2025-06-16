@@ -1,44 +1,39 @@
-import React from "react";
-import "./Notifications.css";
-import closeIcon from "./assets/close-button.png";
-import { getLatestNotification } from "./utils";
+// task_2/dashboard/src/Notifications.jsx
+
+import React from 'react';
+import './Notifications.css';
+import closeIcon from './assets/close-button.png';
+import { getLatestNotification } from './utils';
 
 function Notifications() {
-  // Function to handle the button click
-  const handleCloseClick = () => {
-    console.log("Close button has been clicked");
+  const handleClick = () => {
+    console.log('Close button has been clicked');
   };
 
   return (
     <div className="notifications">
-      <p>Here is the list of notifications</p>
-
-      {/* Button to close notifications */}
       <button
-        className="close-button"
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer'
+        }}
         aria-label="Close"
-        onClick={handleCloseClick}
+        onClick={handleClick}
       >
-        <img src={closeIcon} alt="Close" />
+        <img src={closeIcon} alt="close" style={{ height: '10px', width: '10px' }} />
       </button>
-
-      {/* Unordered list for notifications */}
+      <p>Here is the list of notifications</p>
       <ul>
-        {/* First item: Default priority (blue) */}
         <li data-priority="default">New course available</li>
-
-        {/* Second item: Urgent priority (red) */}
         <li data-priority="urgent">New resume available</li>
-
-        {/* Third item: Latest notification using dangerouslySetInnerHTML */}
-        <li>
-          <span
-            dangerouslySetInnerHTML={{
-              __html: getLatestNotification(),
-            }}
-            style={{ color: "red" }} // Apply red color explicitly
-          />
-        </li>
+        <li
+          data-priority="urgent"
+          dangerouslySetInnerHTML={{ __html: getLatestNotification() }}
+        />
       </ul>
     </div>
   );

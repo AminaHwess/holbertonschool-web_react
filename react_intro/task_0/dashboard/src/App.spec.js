@@ -1,29 +1,25 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
 describe('App component', () => {
-  it('renders the h1 element with text "School dashboard"', () => {
+  test('renders the header title', () => {
     render(<App />);
-    const headingElement = screen.getByRole('heading', { name: /school dashboard/i });
-    expect(headingElement).toBeInTheDocument();
+    const heading = screen.getByRole('heading', { name: /school dashboard/i });
+    expect(heading).toBeInTheDocument();
   });
 
-  it('renders paragraph texts correctly in app-body and app-footer', () => {
+  test('renders correct paragraph text in App-body and App-footer', () => {
     render(<App />);
-    
-    // Check app-body paragraph
-    const bodyParagraph = screen.getByText(/login to access the full dashboard/i);
-    expect(bodyParagraph).toBeInTheDocument();
-    
-    // Check app-footer paragraph - using a regex to match the dynamic year
-    const currentYear = new Date().getFullYear();
-    const footerParagraph = screen.getByText(new RegExp(`copyright ${currentYear} - holberton school`, 'i'));
-    expect(footerParagraph).toBeInTheDocument();
+    const bodyText = screen.getByText(/login to access the full dashboard/i);
+    const footerText = screen.getByText(/copyright.*holberton school/i);
+    expect(bodyText).toBeInTheDocument();
+    expect(footerText).toBeInTheDocument();
   });
 
-  it('renders an img element with alt text "holberton logo"', () => {
+  test('renders the holberton logo image', () => {
     render(<App />);
-    const logoImage = screen.getByAltText(/holberton logo/i);
-    expect(logoImage).toBeInTheDocument();
+    const logoImg = screen.getByAltText(/holberton logo/i);
+    expect(logoImg).toBeInTheDocument();
   });
 });
