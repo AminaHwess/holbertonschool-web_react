@@ -27,18 +27,17 @@ test("checking if the right text is logged when the button is clicked", async ()
     spy.mockRestore()
 })
 
-test("checing if the component renders the 3 li tags", () => {
+test("checking if the component renders the 3 li tags", () => {
     const mnotifications = [
-        {key: uuidv4(), type: "default", value: "New course available", html: undefined},
-        {key: uuidv4(), type: "urgent", value: "New resume available", html: undefined},
-        {key: uuidv4(), type: "urgent", value: "Urgent requirement - complete by EOD", html: undefined}
+        {id: uuidv4(), type: "default", value: "New course available"},
+        {id: uuidv4(), type: "urgent", value: "New resume available"},
+        {id: uuidv4(), type: "urgent", value: "Urgent requirement - complete by EOD"}
     ]
 
     render(<Notifications notifications={mnotifications}/>)
-    const litag1 = screen.getByText("New course available")
-    const litag2 = screen.getByText("New resume available")
-    const litag3 = screen.getByText("Urgent requirement - complete by EOD")
-    expect(litag1).toBeInTheDocument()
-    expect(litag2).toBeInTheDocument()
-    expect(litag3).toBeInTheDocument()
+    const listItems = screen.getAllByRole('listitem')
+    expect(listItems).toHaveLength(3)
+    expect(screen.getByText("New course available")).toBeInTheDocument()
+    expect(screen.getByText("New resume available")).toBeInTheDocument()
+    expect(screen.getByText("Urgent requirement - complete by EOD")).toBeInTheDocument()
 })

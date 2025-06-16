@@ -1,6 +1,7 @@
 import "./Notifications.css";
 import PropTypes from "prop-types";
 import NotificationItem from "./NotificationItem.jsx";
+import closeIcon from "../assets/close-button.png";
 
 function Notifications({ notifications = [] }) {
   return (
@@ -15,7 +16,7 @@ function Notifications({ notifications = [] }) {
           }}
           type="button"
         >
-          <img src="/src/assets/close-button.png" alt="close button" />
+          <img src={closeIcon} alt="close button" />
         </button>
         <ul>
           {notifications.map((obj) => {

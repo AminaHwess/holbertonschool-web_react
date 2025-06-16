@@ -1,23 +1,15 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import Footer from "./Footer";
-import { getCurrentYear, getFooterCopy } from "../utils/utils";
+import { getCurrentYear } from "../utils/utils";
 
 describe("Footer Component", () => {
-  beforeEach(() => {
-    render(<Footer />);
-  });
-
-  it("renders the correct copyright text when isIndex is true", () => {
-    const expectedText = `Copyright ${getCurrentYear()} - ${getFooterCopy(
-      true
-    )}`;
-
-    const paragraph = screen.getByText((content) =>
-      content.includes(expectedText)
-    );
+  it("p element renders the string Copyright {the current year} - Holberton School, whenever the getFooterCopy() isIndex argument is set to true", () => {
+    render(<Footer isIndex={true} />);
+    
+    const expectedText = `Copyright ${getCurrentYear()} - Holberton School`;
+    const paragraph = screen.getByText(expectedText);
 
     expect(paragraph).toBeInTheDocument();
   });

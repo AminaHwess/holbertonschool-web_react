@@ -18,7 +18,8 @@ test("checking if login is rendered", () => {
 
 test("checking if footer is rendered", () => {
     render(<Footer/>)
-    const f = screen.getByText("Copyright 2024 - Holberton School main dashboard")
+    const currentYear = new Date().getFullYear()
+    const f = screen.getByText(`Copyright ${currentYear} - Holberton School main dashboard`)
     expect(f).toBeInTheDocument()
 })
 

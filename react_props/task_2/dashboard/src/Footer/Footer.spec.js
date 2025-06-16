@@ -1,19 +1,17 @@
 
-import {render, screen} from '@testing-library/react'
-import Footer from './Footer.jsx'
-import * as myModule from '../utils/utils.js'
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import Footer from "./Footer";
+import { getCurrentYear } from "../utils/utils";
 
-describe("Footer component", () => {
-    it ("if the footer paragraph rendred", () => {
-        render(<Footer />)
-        const p = screen.getByText("Copyright 2025 - Holberton School main dashboard")
-        expect(p).toBeInTheDocument()
-    })
-    it("checking if the footer renderes the correct paragraph content when the argument of getFooterCopy is true", () => {
-        jest.spyOn(myModule, 'getFooterCopy').mockImplementation(() => 'Holberton School')
-        render(<Footer />)
-        const p = screen.getByText("Copyright 2025 - Holberton School")
-        expect(p).toBeInTheDocument()
-    })
-})
+describe("Footer Component", () => {
+  it("p element renders the string Copyright {the current year} - Holberton School, whenever the getFooterCopy() isIndex argument is set to true", () => {
+    render(<Footer isIndex={true} />);
+    
+    const expectedText = `Copyright ${getCurrentYear()} - Holberton School`;
+    const paragraph = screen.getByText(expectedText);
+
+    expect(paragraph).toBeInTheDocument();
+  });
+});
 

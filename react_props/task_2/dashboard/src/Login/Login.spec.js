@@ -1,31 +1,30 @@
-import {render, screen} from '@testing-library/react'
-import Login from './Login.jsx'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
+import Login from "./Login";
 
-describe("Login component", () => {
-    it("are the input elements renderd", () => {
-        render(<Login />)
-        const allInputs = screen.getAllByRole("textbox")
-        expect(allInputs.length).toBe(2)
-    })
-    it("are the labels rendred", () => {
-        render(<Login />)
-        const label1 = screen.getByLabelText("Email")
-        expect(label1).toBeInTheDocument()
-        const label2 = screen.getByLabelText("Password")
-        expect(label2).toBeInTheDocument()
-    })
-    it("is the button rendred", () => {
-        render(<Login />)
-        const btn = screen.getByTestId("btn")
-        expect(btn).toBeInTheDocument()
-        expect(btn.textContent).toMatch(/OK/)
-    })
-    it("checking if the input is focused if a label is clicked", async () => {
-        render(<Login />)
-        const userE = userEvent.setup()
-        const inp = screen.getByTestId("pw")
-        await userE.click(screen.getByLabelText("Password"))
-        expect(inp).toBe(document.activeElement)
-    })
-})
+describe("Login Component", () => {
+  it("Login includes 2 label, 2 inputs, and 1 button elements", () => {
+    render(<Login />);
+    const labels = screen.getAllByLabelText(/Email|Password/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const button = screen.getByRole("button");
+
+    expect(labels.length).toBe(2);
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+  });
+
+  it("inputs elements get focused whenever the related label is clicked", async () => {
+    render(<Login />);
+    const user = userEvent.setup();
+    const emailLabel = screen.getByText("Email");
+    const emailInput = screen.getByLabelText("Email");
+
+    await user.click(emailLabel);
+
+    expect(document.activeElement).toBe(emailInput);
+  });
+});

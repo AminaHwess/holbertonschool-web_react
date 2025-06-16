@@ -1,4 +1,4 @@
-import React from "react";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
@@ -6,23 +6,23 @@ import "@testing-library/jest-dom";
 import Login from "./Login";
 
 describe("Login Component", () => {
-  beforeEach(() => {
+  it("Login includes 2 label, 2 inputs, and 1 button elements", () => {
     render(<Login />);
-  });
-
-  it("includes 2 labels, 2 inputs, and 1 button", () => {
     const labels = screen.getAllByLabelText(/Email|Password/i);
-    const inputs = screen.getAllByRole("textbox");
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
     const button = screen.getByRole("button");
 
     expect(labels.length).toBe(2);
-    expect(inputs.length).toBe(2);
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
     expect(button).toBeInTheDocument();
   });
 
-  it("focuses input when clicking associated label (Email)", async () => {
+  it("inputs elements get focused whenever the related label is clicked", async () => {
+    render(<Login />);
     const user = userEvent.setup();
-    const emailLabel = screen.getByLabelText("Email");
+    const emailLabel = screen.getByText("Email");
     const emailInput = screen.getByLabelText("Email");
 
     await user.click(emailLabel);

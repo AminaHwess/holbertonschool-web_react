@@ -1,14 +1,17 @@
-import { render } from '@testing-library/react'
-import NotificationsItem from './NotificationItem.jsx'
-import { screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import NotificationItem from './NotificationItem.jsx'
+import '@testing-library/jest-dom'
 
 test("checking if the lists have the right color when the type is default", () => {
-    render(<NotificationsItem type={"default"} html={undefined} value={"testing"}></NotificationsItem>)
-    const text = screen.getByText("testing")
-    expect(text).toBeInTheDocument()
+    render(<NotificationItem type="default" value="testing" />)
+    const listItem = screen.getByText("testing")
+    expect(listItem).toBeInTheDocument()
+    expect(listItem).toHaveAttribute("data-notification-type", "default")
 })
+
 test("checking if the lists have the right color when the type is urgent", () => {
-    render(<NotificationsItem type={"urgent"} html={undefined} value={"testing"}></NotificationsItem>)
-    const text = screen.getByText("testing")
-    expect(text).toBeInTheDocument()
+    render(<NotificationItem type="urgent" value="testing" />)
+    const listItem = screen.getByText("testing")
+    expect(listItem).toBeInTheDocument()
+    expect(listItem).toHaveAttribute("data-notification-type", "urgent")
 })

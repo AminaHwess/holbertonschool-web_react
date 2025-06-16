@@ -1,20 +1,18 @@
-import {render, screen} from '@testing-library/react'
-import Header from './Header.jsx'
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import Header from "./Header";
 
-describe("Header component", () => {
-    it("is the header rendered", () => {
-        render(<Header />)
-        const h1elem = screen.getByRole("heading")
-        expect(h1elem).toBeInTheDocument()
-    })
-    it("is the image rendred", () => {
-        render(<Header />)
-        const img = screen.getByAltText("holberton logo")
-        expect(img).toBeInTheDocument()
-    })
-    it("checking if the h1 is with the correct text", () => {
-        render(<Header />)
-        const h1elem = screen.getByRole("heading")
-        expect(h1elem.textContent).toBe("School dashboard")
-    })
-})
+describe("Header Component", () => {
+  it("Header component contains the Holberton logo", () => {
+    render(<Header />);
+    const logo = screen.getByAltText("holberton logo");
+    expect(logo).toBeInTheDocument();
+  });
+
+  it("Header component contains the heading h1 element with the correct text", () => {
+    render(<Header />);
+    const heading = screen.getByRole("heading", { level: 1 });
+    expect(heading).toBeInTheDocument();
+    expect(heading).toHaveTextContent("School dashboard");
+  });
+});
