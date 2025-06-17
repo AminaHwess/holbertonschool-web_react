@@ -1,4 +1,3 @@
-// src/index.js
 import $ from 'jquery';
 
 $('body').append('<p>Holberton Dashboard</p>');
