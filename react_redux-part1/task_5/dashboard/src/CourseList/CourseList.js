@@ -1,10 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 import CourseListRow from './CourseListRow';
 import CourseShape from './CourseShape';
+import { useSelector } from 'react-redux';
 
-function CourseList({ listCourses = [] }) {
+function CourseList() {
+  const courses = useSelector((state) => state.courses.courses);
   return (
     <table className={css(styles.table)}>
       <thead>
@@ -12,8 +13,8 @@ function CourseList({ listCourses = [] }) {
         <CourseListRow isHeader textFirstCell="Course name" textSecondCell="Credit" />
       </thead>
       <tbody>
-        {listCourses.length > 0 ? (
-          listCourses.map(course => (
+        {courses.length > 0 ? (
+          courses.map(course => (
             <CourseListRow key={course.id} textFirstCell={course.name} textSecondCell={course.credit.toString()} />
           ))
         ) : (
@@ -23,14 +24,6 @@ function CourseList({ listCourses = [] }) {
     </table>
   );
 }
-
-CourseList.propTypes = {
-  listCourses: PropTypes.arrayOf(CourseShape)
-};
-
-CourseList.defaultProps = {
-  listCourses: []
-};
 
 const styles = StyleSheet.create({
   table: {

@@ -1,16 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { getFullYear, getFooterCopy } from '../utils/utils';
-import AppContext from '../App/AppContext';
+import { useSelector } from 'react-redux';
 
 function Footer() {
-    const { user } = useContext(AppContext);
+    const user = useSelector((state) => state.auth.user);
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
     return (
         <footer className={css(styles.footer)}>
             <em>
                 <p>{`© Copyright ${getFullYear()} - ${getFooterCopy(true)}`}</p>
-                {user.isLoggedIn && <p><a href="/contact">Contact us</a></p>} // Usando user.isLoggedIn para verificar o estado de login
+                {isLoggedIn && <p><a href="/contact">Contact us</a></p>}
             </em>
         </footer>
     );

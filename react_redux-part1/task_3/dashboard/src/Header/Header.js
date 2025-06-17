@@ -1,28 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import logo from '../assets/Holberton_Logo.jpg';
-import AppContext from '../App/AppContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../task_1/dashboard/src/features/auth/authSlice';
 
-class Header extends Component {
-  static contextType = AppContext;
-  render () {
-    const { user, logOut } = this.context; 
+function Header() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-    return (
-      <header className={css(styles.header)}>
-        <div className={css(styles.logoContainer)}>
-          <img src={logo} className={css(styles.logo)} alt="logo" />
-          <h1 className={css(styles.headerTitle)}>School dashboard</h1>
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
+
+  return (
+    <header className={css(styles.header)}>
+      <div className={css(styles.logoContainer)}>
+        <img src={logo} className={css(styles.logo)} alt="logo" />
+        <h1 className={css(styles.headerTitle)}>School dashboard</h1>
+      </div>
+      {isLoggedIn && (
+        <div id="logoutSection" className={css(styles.logoutSection)}>
+          <span>Welcome {user.email} (<a href="#" onClick={handleLogout}>logout</a>)</span>
         </div>
-        {user.isLoggedIn && (
-          <div id="logoutSection" className={css(styles.logoutSection)}>
-            <span>Welcome {user.email} (<a href="#" onClick={logOut}>logout</a>)</span>
-          </div>
-        )}
-      </header>
-    );
-  }
-};
+      )}
+    </header>
+  );
+}
 
 const styles = StyleSheet.create({
   header: {
@@ -48,7 +53,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: '#e0003c',
   },
-  
 });
 
 export default Header;
