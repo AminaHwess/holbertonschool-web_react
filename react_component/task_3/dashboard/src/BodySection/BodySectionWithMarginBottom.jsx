@@ -1,13 +1,5 @@
-import React from "react";
-import BodySection from "./BodySection";
-import "./BodySectionWithMarginBottom.css";
+import BodySection from './BodySection'
 
-function BodySectionWithMarginBottom({ title, children }) {
-  return (
-    <div className="bodySectionWithMargin">
-      <BodySection title={title}>{children}</BodySection>
-    </div>
-  );
+export default function BodySectionWithMarginBottom(props) {
+    return (<><div className="bodySectionWithMargin" role='bswm'><BodySection {...props}></BodySection></div></>)
 }
-
-export default BodySectionWithMarginBottom;

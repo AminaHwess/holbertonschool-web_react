@@ -1,26 +1,43 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import Notifications from "./Notifications";
+import Notifications from './Notifications.jsx'
+import { render, screen } from '@testing-library/react'
+import { v4 as uuidv4 } from 'uuid'
+import { getLatestNotification } from '../utils/utils.js'
+import userEvent from '@testing-library/user-event'
 
-describe("Notifications Component", () => {
-  test("logs the correct message when a notification item is clicked", () => {
-    const mockConsoleLog = jest.spyOn(console, "log").mockImplementation(() => {});
 
-    const notificationsList = [
-      { id: 1, type: "default", value: "New course available" },
-    ];
+test("if the displayDrawler is false", () => {
+    render(<Notifications notifications={[]} displayDrawer={false}/>)
+    const p = screen.getByRole("paragraph")
+    expect(p).toBeInTheDocument()
+    const btn = screen.queryByRole("button")
+    expect(btn).toBeNull()
+})
 
-    render(<Notifications notifications={notificationsList} displayDrawer={true} />);
+test("if the displayDrawler is true and the list is not empty", () => {
+    render(<Notifications notifications={[{id: uuidv4(), type: "default", value: "New course available"}, {id: uuidv4(), type: "urgent", value: "New resume available"}, {id: uuidv4(), type: "urgent", HTML: getLatestNotification()}]} displayDrawer={true}/>)
+    const p = screen.getAllByRole("paragraph")
+    expect(p.length).toBe(2)
+    const btn = screen.queryByRole("button")
+    expect(btn).toBeInTheDocument()
+    const li = screen.getAllByRole("listitem")
+    expect(li.length).toBe(3)
+    // equal to the list length
+})
 
-    const notificationItem = screen.getByText("New course available");
-    notificationItem.click();
+test("if the displayDrawler is true and the list is empty", () => {
+    render(<Notifications notifications={[]} displayDrawer={true}/>)
+    const text = screen.getByText("No new notification for now")
+    expect(text).toBeInTheDocument()
+})
 
-    expect(mockConsoleLog).toHaveBeenCalledWith("Notification 1 has been marked as read");
-
-    mockConsoleLog.mockRestore();
-  });
-
-  test("renders without crashing", () => {
-    render(<Notifications />);
-  });
-});
+test("if the message Notification {id} has been marked as read is logged", async () => {
+    const logMock = jest.spyOn(console, 'log').mockImplementation(() => {})
+    const mockedFunc = jest.fn().mockImplementation(() => {console.log(`Notification 123 has been marked as read`)})
+    render(<Notifications notifications={[{id: uuidv4(), type: "default", value: "New course available"}, {id: uuidv4(), type: "urgent", value: "New resume available"}, {id: uuidv4(), type: "urgent", HTML: getLatestNotification()}]} displayDrawer={true}/>)
+    console.log(screen.getAllByRole("listitem"))
+    const userE = userEvent.setup()
+    let itemsArray = screen.getAllByRole("listitem")
+    await userE.click(itemsArray[0])
+    expect(logMock).toBeCalled()
+    jest.clearAllMocks()
+})

@@ -1,31 +1,16 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import BodySection from "./BodySection";
+import {render, screen} from "@testing-library/react"
+import BodySection from "./BodySection"
 
-describe("BodySection Component", () => {
-  it("renders the heading with the correct title", () => {
-    render(
-      <BodySection title="test">
-        <p>test</p>
-      </BodySection>
-    );
+test("testing that the BodySection component renders a heading with the title prop value", () => {
+    render(<BodySection title="TEST-TITLE"></BodySection>)
+    const heading = screen.getByText("TEST-TITLE")
+    expect(heading).toBeInTheDocument()
+})
 
-    const heading = screen.getByRole("heading", { level: 2, name: /test/i });
-    expect(heading).toBeInTheDocument();
-  });
-
-  it("renders all children passed to it", () => {
-    render(
-      <BodySection title="test">
-        <p>child 1</p>
-        <span>child 2</span>
-      </BodySection>
-    );
-
-    const child1 = screen.getByText("child 1");
-    const child2 = screen.getByText("child 2");
-
-    expect(child1).toBeInTheDocument();
-    expect(child2).toBeInTheDocument();
-  });
-});
+test("testing that the BodySection component renders any number of children passed to it", () => {
+    render(<BodySection><p>para1</p><p>para2</p></BodySection>)
+    const p1 = screen.getByText("para1")
+    const p2 = screen.getByText("para2")
+    expect(p1).toBeInTheDocument()
+    expect(p2).toBeInTheDocument()
+})

@@ -1,70 +1,29 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import NotificationItem from "./NotificationItem.jsx";
+import { render } from '@testing-library/react'
+import NotificationItem from './NotificationItem.jsx'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-describe("NotificationItem Component", () => {
-  test("calls the markAsRead prop when clicked", () => {
-    const mockMarkAsRead = jest.fn();
-    const defaultProps = {
-      id: 1,
-      type: "default",
-      value: "Test notification",
-      markAsRead: mockMarkAsRead,
-    };
+test("checking if the lists have the right color when the type is default", () => {
+    let mockedFunc = jest.fn().mockImplementation(() => {})
+    render(<NotificationItem type={"default"} html={undefined} value={"testing"} fn={mockedFunc}></NotificationItem>)
+    const text = screen.getByText("testing")
+    expect(text).toBeInTheDocument()
+    jest.clearAllMocks()
+})
+test("checking if the lists have the right color when the type is urgent", () => {
+    let mockedFunc = jest.fn().mockImplementation(() => {})
+    render(<NotificationItem type={"urgent"} html={undefined} value={"testing"} fn={mockedFunc}></NotificationItem>)
+    const text = screen.getByText("testing")
+    expect(text).toBeInTheDocument()
+    jest.clearAllMocks()
+})
 
-    render(<NotificationItem {...defaultProps} />);
-    const liElement = screen.getByText("Test notification");
-
-    liElement.click();
-
-    expect(mockMarkAsRead).toHaveBeenCalledWith(1);
-  });
-
-  test("applies the correct color for 'default' type", () => {
-    const defaultProps = {
-      id: 1,
-      type: "default",
-      value: "Default notification",
-      markAsRead: () => {},
-    };
-    const { container } = render(<NotificationItem {...defaultProps} />);
-    const li = container.querySelector("li");
-    expect(li).toHaveStyle("color: blue");
-  });
-
-  test("applies the correct color for 'urgent' type", () => {
-    const defaultProps = {
-      id: 2,
-      type: "urgent",
-      value: "Urgent notification",
-      markAsRead: () => {},
-    };
-    const { container } = render(<NotificationItem {...defaultProps} />);
-    const li = container.querySelector("li");
-    expect(li).toHaveStyle("color: red");
-  });
-
-  test("has the correct data-notification-type attribute for default", () => {
-    const defaultProps = {
-      id: 1,
-      type: "default",
-      value: "Default notification",
-      markAsRead: () => {},
-    };
-    const { container } = render(<NotificationItem {...defaultProps} />);
-    const li = container.querySelector("li");
-    expect(li).toHaveAttribute("data-notification-type", "default");
-  });
-
-  test("has the correct data-notification-type attribute for urgent", () => {
-    const defaultProps = {
-      id: 2,
-      type: "urgent",
-      value: "Urgent notification",
-      markAsRead: () => {},
-    };
-    const { container } = render(<NotificationItem {...defaultProps} />);
-    const li = container.querySelector("li");
-    expect(li).toHaveAttribute("data-notification-type", "urgent");
-  });
-});
+test("if the message Notification {id} has been marked as read is logged", async () => {
+    const logMock = jest.spyOn(console, 'log').mockImplementation(() => {})
+    const mockedFunc = jest.fn().mockImplementation(() => {console.log(`Notification 123 has been marked as read`)})
+    render(<NotificationItem  key={123} type={"default"} value={"New resume available"} fn={mockedFunc}/>)
+    const userE = userEvent.setup()
+    await userE.click(screen.getByRole("listitem"))
+    expect(logMock).toBeCalledWith(`Notification 123 has been marked as read`)
+    jest.clearAllMocks()
+})

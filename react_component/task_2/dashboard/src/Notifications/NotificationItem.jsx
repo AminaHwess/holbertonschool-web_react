@@ -1,38 +1,28 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import "./Notifications.css";
-import { v4 as uuid4 } from "uuid";
+import PropTypes from "prop-types"
+import "./Notifications.css"
+import {v4 as uuid4} from "uuid"
+import { Component } from "react"
 
 class NotificationItem extends Component {
-  handleClick = () => {
-    const { markAsRead, id } = this.props;
-    if (markAsRead && id !== undefined) {
-      markAsRead(id);
+    render() {
+        if (this.props.html != undefined) {
+            let id = uuid4()
+            let newfn = this.props.fn.bind(this,id)
+            return (<li key={id} data-notification-type={this.props.type} dangerouslySetInnerHTML={{__html: this.props.html}} role="listitem" onClick={newfn}></li>)
+        }
+        else {
+            let id = uuid4()
+            let newfn = this.props.fn.bind(this,id)
+            return (<li key={uuid4()} data-notification-type={this.props.type} role="listitem" onClick={newfn}>{this.props.value}</li>)
+        }   
     }
-  };
-
-  render() {
-    const { type, html, value } = this.props;
-
-    return (
-      <li
-        data-notification-type={type}
-        onClick={this.handleClick}
-        dangerouslySetInnerHTML={html ? { __html: html } : undefined}
-        style={{ color: type === "urgent" ? "red" : "blue" }}
-      >
-        {value || ""}
-      </li>
-    );
-  }
 }
 
 NotificationItem.propTypes = {
-  id: PropTypes.number.isRequired,
-  type: PropTypes.string,
-  html: PropTypes.string,
-  value: PropTypes.string,
-  markAsRead: PropTypes.func,
-};
+    type: PropTypes.string,
+    html: PropTypes.string,
+    value: PropTypes.string,
+    fn: PropTypes.func
+}
 
-export default NotificationItem;
+export default NotificationItem

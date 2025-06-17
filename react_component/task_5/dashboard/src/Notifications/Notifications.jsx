@@ -1,67 +1,61 @@
-import React from 'react';
-import './Notifications.css';
-import close_icon from '../assets/close-icon.png';
-import { getLatestNotification } from '../utils/utils';
-import NotificationItem from './NotificationItem';
-import PropTypes from 'prop-types'; // ES6
-import NotificationItemShape from './NotificationItemShape';
+import "./Notifications.css"
+import PropTypes from 'prop-types'
+import NotificationItem from "./NotificationItem.jsx"
+import {v4 as uuid4} from "uuid"
+import { Component } from "react"
 
-const btnStyle = {
-  top: '1em',
-  right: '1em',
-  background: 'transparent',
-  border: 'none',
-  display: 'flex',
-  width: '100%',
-  justifyContent: 'flex-end',
-};
 
-const imgStyle = {
-  width: '20px',
-  height: '20px',
-}
+class Notifications extends Component {
+    markAsRead(id) {
+        console.log(`Notification ${id} has been marked as read`)
+    }
 
-class Notifications extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    // returns true render will be invoked
-    if (this.props.listNotifications.length < nextProps.listNotifications.length) return true
-    return false;
-  }
-
-  render() {
-    return (
-      <div className="notification-container">
-        <div className="menuItem">Your notifications</div>
-        { this.props.displayDrawer ?
-          (<div className="Notifications">
-            <button style={btnStyle} aria-label='Close' onClick={() => console.log('Close button has been clicked')}>
-              <img src={close_icon} style={imgStyle}/>
-            </button>
-            <p>Here is the list of notifications</p>
-            <ul>
-              {this.props.listNotifications.length === 0 ? (<NotificationItem id={0} value="No new notification for now" type='no-new' markAsRead={this.markAsRead} />) : <></>}
-              {this.props.listNotifications.map((list) => (<NotificationItem id={list.id} key={list.id} type={list.type} value={list.value} html={list.html} markAsRead={this.markAsRead} />))}
-            </ul>
-          </div>)
-          : <></>
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.notifications.length != this.props.notifications.length) {
+            return(true)
+        } else {
+            return(false)
         }
-      </div>
-    );
-  }
-  
-  markAsRead(id) {
-    console.log(`Notification ${id} has been marked as read`)
-  }
+    }
+
+    render() {
+        console.log("rendered")
+        if (this.props.displayDrawer == false) {
+            return (<>
+                        <div className='notifications-title' role='paragraph'>Your notifications</div>
+                    </>)
+        }
+        else {
+        return (
+        <>
+        <div className='notifications-title' role='paragraph'>Your notifications</div>
+        <div className="notifications">
+        
+                {this.props.notifications.length != 0 ?  ( 
+                    <>
+                        <p>Here is the list of notifications</p>
+                        <button  aria-label="Close" style={{display: "inline"}} onClick={() => {console.log("Close button has been clicked")}} type="button"><img src="/src/assets/close-button.png" alt="close button"/></button>
+                        <ul>
+                            {this.props.notifications.map((obj) => (
+                                <NotificationItem  key={uuid4()} type={obj.type} value={obj.value} html={obj.HTML} fn={this.markAsRead}/>)
+                                )
+                                }
+                        </ul>
+                    </>
+                    )
+                    : (<p>No new notification for now</p>)
+                }
+        </div>
+        </>
+        )
+        }}
 }
 
 Notifications.propTypes = {
-  displayDrawer: PropTypes.bool,
-  listNotifications: PropTypes.arrayOf(NotificationItemShape)
-};
+    notifications: PropTypes.array,
+    displayDrawer: PropTypes.bool
+}
 
-Notifications.defaultProps = {
-  displayDrawer: false,
-  listNotifications: []
-};
 
-export default Notifications;
+
+export default Notifications

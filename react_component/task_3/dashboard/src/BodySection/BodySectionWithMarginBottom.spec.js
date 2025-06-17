@@ -1,30 +1,15 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import BodySectionWithMarginBottom from "./BodySectionWithMarginBottom";
+import {render, screen} from "@testing-library/react"
+import BodySectionWithMarginBottom from "./BodySectionWithMarginBottom"
+import { TestEnvironment } from "jest-environment-jsdom"
 
-describe("BodySectionWithMarginBottom Component", () => {
-  it("contains a div with class bodySectionWithMargin", () => {
-    render(
-      <BodySectionWithMarginBottom title="test">
-        <p>test content</p>
-      </BodySectionWithMarginBottom>
-    );
+test("testing that the BodySectionWithMarginBottom component contains a div with the class bodySectionWithMargin", () => {
+    render(<BodySectionWithMarginBottom/>)
+    const elem = screen.getByRole("bswm")
+    expect(elem).toBeInTheDocument()
+})
 
-    const container = screen.getByTestId("bodySectionWithMargin");
-    expect(container).toBeInTheDocument();
-  });
-
-  it("renders the BodySection component", () => {
-    render(
-      <BodySectionWithMarginBottom title="test">
-        <p>test content</p>
-      </BodySectionWithMarginBottom>
-    );
-
-    const heading = screen.getByRole("heading", { level: 2, name: /test/i });
-    const paragraph = screen.getByText("test content");
-
-    expect(heading).toBeInTheDocument();
-    expect(paragraph).toBeInTheDocument();
-  });
-});
+test("testing that the BodySectionWithMarginBottom component renders the BodySection component", () => {
+    render(<BodySectionWithMarginBottom/>)
+    const elem = screen.getByRole("bs")
+    expect(elem).toBeInTheDocument()
+})
